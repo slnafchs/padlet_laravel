@@ -42,4 +42,4 @@ Route::post('entries/{entrie_id}/comments', [CommentController::class, 'saveComm
 Route::post('entries/{entrie_id}/ratings', [RatingController::class, 'saveRating']);
 Route::get('comments', [CommentController::class,'index']);
 
-//Route::get('entries/{entrie_id}/comments', [CommentController::class,'findCommentsByID']);
+Route::get('entries/{entrie_id}/ratings', [RatingController::class,'findByEntryID']);
