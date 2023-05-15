@@ -38,7 +38,6 @@ class PadletsTableSeeder extends Seeder
         $padlet->entries()->saveMany([$entrie, $entrie1]);
         $padlet->save();
 
-
         $padlet2 = new \App\Models\Padlet;
         $padlet2->name="Zweites Padlet";
         $padlet2->is_public=true;
