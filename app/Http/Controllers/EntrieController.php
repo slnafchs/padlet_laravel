@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Padlet;
 use App\Models\Entrie;
 use App\Models\User;
@@ -93,11 +94,6 @@ class EntrieController extends Controller
             return response()->json("updating Entry failed: " . $e->getMessage(), 420);
         }
     }
-
-    //save Comment
-
-
-    //save Rating
 
 
     private function parseRequest(Request $request): Request

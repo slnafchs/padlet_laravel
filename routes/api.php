@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\EntrieController;
 use App\Http\Controllers\PadletController;
+use App\Http\Controllers\RatingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Padlet;
@@ -35,3 +37,9 @@ Route::get('padlets/{padlet_id}/entries', [EntrieController::class,'findByPadlet
 Route::post('padlets/{padlet_id}/entries', [EntrieController::class, 'save']);
 Route::put('entries/{id}', [EntrieController::class,'update']);
 Route::delete('entries/{id}', [EntrieController::class, 'delete']);
+
+Route::post('entries/{entrie_id}/comments', [CommentController::class, 'saveComment']);
+Route::post('entries/{entrie_id}/ratings', [RatingController::class, 'saveRating']);
+Route::get('comments', [CommentController::class,'index']);
+
+//Route::get('entries/{entrie_id}/comments', [CommentController::class,'findCommentsByID']);
