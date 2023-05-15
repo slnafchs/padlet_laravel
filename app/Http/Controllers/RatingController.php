@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\DB;
 
 class RatingController extends Controller
 {
-
     //find Rating by EntryID
     public function findByEntryID(string $entry_id):JsonResponse{
         $rating = Rating::where('entrie_id', $entry_id)
@@ -22,6 +21,7 @@ class RatingController extends Controller
         return $rating != null ? response()->json($rating, 200) : response()->json(null, 200);
     }
 
+    //save Rating
     public function saveRating(Request $request, string $entrieID): JsonResponse
     {
         $request = $this->parseRequest($request);

@@ -27,7 +27,7 @@ class CommentController extends Controller
     }
 
 
-    //create Comment
+    //save/create Comment
     public function saveComment(Request $request, string $entrieID): JsonResponse
     {
         $request = $this->parseRequest($request);
