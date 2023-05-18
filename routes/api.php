@@ -4,6 +4,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\EntrieController;
 use App\Http\Controllers\PadletController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Padlet;
@@ -43,3 +44,5 @@ Route::post('entries/{entrie_id}/ratings', [RatingController::class, 'saveRating
 Route::get('comments', [CommentController::class,'index']);
 
 Route::get('entries/{entrie_id}/ratings', [RatingController::class,'findByEntryID']);
+Route::get('entries/{entrie_id}/comments', [CommentController::class,'findByEntryID']);
+Route::get('users/{id}', [UserController::class, 'findById']);

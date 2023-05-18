@@ -26,6 +26,11 @@ class CommentController extends Controller
         return $comment != null ? response()->json($comment, 200) : response()->json(null, 200);
     }
 
+    public function findByEntryID(string $entry_id):JsonResponse{
+        $comment = Comment::where('entrie_id', $entry_id)
+            ->with(['user', 'entrie'])->get();
+        return $comment != null ? response()->json($comment, 200) : response()->json(null, 200);
+    }
 
     //save/create Comment
     public function saveComment(Request $request, string $entrieID): JsonResponse
