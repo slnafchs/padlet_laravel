@@ -7,7 +7,7 @@ use App\Http\Controllers\RatingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Models\Padlet;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,3 +46,9 @@ Route::get('comments', [CommentController::class,'index']);
 Route::get('entries/{entrie_id}/ratings', [RatingController::class,'findByEntryID']);
 Route::get('entries/{entrie_id}/comments', [CommentController::class,'findByEntryID']);
 Route::get('users/{id}', [UserController::class, 'findById']);
+
+/* auth */
+Route::middleware('cors')->group(function() {
+    Route::post('auth/login', [AuthController::class,'login']);
+});
+

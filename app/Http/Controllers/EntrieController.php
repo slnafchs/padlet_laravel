@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 class EntrieController extends Controller
 {
     public function index():JsonResponse{
-        $entry = Entrie::with(['comments','user', 'ratings'])->get();
+        $entry = Entrie::with(['comments', 'user', 'ratings'])->get();
         return response()->json($entry, 200);
     }
 
