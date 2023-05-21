@@ -36,6 +36,21 @@ class PadletController extends Controller
         return $padlet != null ? response()->json($padlet, 200) : response()->json(null, 200);
     }
 
+    //find padlet by ID
+    public function getPublic(): JsonResponse
+    {
+        $padlets = Padlet::where('is_public', TRUE)
+            ->with(['user', 'entries', 'userrights'])->get();
+        return $padlets != null ? response()->json($padlets, 200) : response()->json(null, 200);
+    }
+
+    public function getPadletsOfUser(string $user_id): JsonResponse
+    {
+        $padlets = Padlet::where('user_id', $user_id)
+            ->with(['user', 'entries', 'userrights'])->get();
+        return $padlets != null ? response()->json($padlets, 200) : response()->json(null, 200);
+    }
+
     public function checkID(string $id): JsonResponse
     {
         $padlet = Padlet::where('id', $id)->first();

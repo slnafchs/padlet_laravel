@@ -28,12 +28,15 @@ Route::get('padlets', [PadletController::class,'index']);
 Route::get('padlets/{id}', [PadletController::class,'findById']);
 Route::get('padlets/checkid/{id}', [PadletController::class,'checkID']);
 Route::get('padlets/search/{searchTerm}', [PadletController::class,'findBySearchTerm']);
+Route::get('public', [PadletController::class,'getPublic']);
+Route::get('mypadlets/{user_id}', [PadletController::class,'getPadletsOfUser']);
 Route::post('padlets', [PadletController::class,'save']);
 Route::put('padlets/{id}', [PadletController::class,'update']);
 Route::delete('padlets/{id}', [PadletController::class, 'delete']);
 
 
 Route::get('entries', [EntrieController::class,'index']);
+Route::get('entries/{id}', [EntrieController::class,'findById']);
 Route::get('padlets/{padlet_id}/entries', [EntrieController::class,'findByPadletID']);
 Route::post('padlets/{padlet_id}/entries', [EntrieController::class, 'save']);
 Route::put('entries/{id}', [EntrieController::class,'update']);
