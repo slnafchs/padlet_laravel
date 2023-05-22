@@ -5,6 +5,7 @@ use App\Http\Controllers\EntrieController;
 use App\Http\Controllers\PadletController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserrightsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -49,6 +50,12 @@ Route::get('comments', [CommentController::class,'index']);
 Route::get('entries/{entrie_id}/ratings', [RatingController::class,'findByEntryID']);
 Route::get('entries/{entrie_id}/comments', [CommentController::class,'findByEntryID']);
 Route::get('users/{id}', [UserController::class, 'findById']);
+
+Route::get('userrights', [UserrightsController::class,'index']);
+Route::post('userrights', [UserrightsController::class,'save']);
+Route::get('userrights/{padlet_id}/{user_id}', [UserrightsController::class,'findById']);
+Route::put('userrights/{padlet_id}/{user_id}', [UserrightsController::class,'update']);
+Route::delete('userrights/{padlet_id}/{user_id}', [UserrightsController::class, 'delete']);
 
 /* auth */
 Route::middleware('cors')->group(function() {
