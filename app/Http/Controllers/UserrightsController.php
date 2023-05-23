@@ -85,6 +85,14 @@ class UserrightsController extends Controller
             return response()->json('$userright could not be deleted - it does not exist', 422);
     }
 
+    //find userrights for padlet ID
+    public function findByPadletId(string $padlet_id) : JsonResponse
+    {
+        $userright = Userright::where('padlet_id', $padlet_id)
+            ->with(['user', 'padlet'])->get();
+        return $userright != null ? response()->json($userright, 200) : response()->json(null, 200);
+    }
+
 
     private function parseRequest(Request $request): Request
     {
