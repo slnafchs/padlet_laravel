@@ -44,14 +44,23 @@ Route::post('padlets/{padlet_id}/entries', [EntrieController::class, 'save']);
 Route::put('entries/{id}', [EntrieController::class,'update']);
 Route::delete('entries/{id}', [EntrieController::class, 'delete']);
 
-Route::post('entries/{entrie_id}/comments', [CommentController::class, 'saveComment']);
-Route::post('entries/{entrie_id}/ratings', [RatingController::class, 'saveRating']);
 Route::get('comments', [CommentController::class,'index']);
+Route::post('entries/{entrie_id}/comments', [CommentController::class, 'saveComment']);
+Route::put('entries/{entrie_id}/comments/{id}', [CommentController::class,'update']);
+Route::delete('entries/{entrie_id}/comments/{id}', [CommentController::class,'delete']);
+
+Route::post('entries/{entrie_id}/ratings', [RatingController::class, 'saveRating']);
+Route::put('entries/{entrie_id}/ratings/{user_id}', [RatingController::class,'update']);
+Route::delete('entries/{entrie_id}/ratings/{user_id}', [RatingController::class,'delete']);
+
 
 Route::get('entries/{entrie_id}/ratings', [RatingController::class,'findByEntryID']);
 Route::get('entries/{entrie_id}/comments', [CommentController::class,'findByEntryID']);
 Route::get('users/{id}', [UserController::class, 'findById']);
 Route::get('users/mail/{mail}', [UserController::class, 'findByEmail']);
+Route::post('users', [UserController::class, 'save']);
+Route::put('users/{user_id}', [UserController::class,'update']);
+Route::delete('users/{user_id}', [UserController::class,'delete']);
 
 Route::get('userrights', [UserrightsController::class,'index']);
 Route::post('userrights', [UserrightsController::class,'save']);
@@ -63,6 +72,7 @@ Route::get('invites', [InvitesController::class,'index']);
 Route::get('invites/{user_id}', [InvitesController::class,'findByUserId']);
 Route::get('invites/{padlet_id}/{user_id}', [InvitesController::class,'findIfExists']);
 Route::post('invites', [InvitesController::class,'save']);
+Route::put('invites/{id}', [InvitesController::class,'update']);
 Route::delete('invites/{id}', [InvitesController::class, 'delete']);
 
 /* auth */
@@ -71,4 +81,5 @@ Route::middleware('cors')->group(function() {
 });
 
 Route::get('userrights/{padlet_id}', [UserrightsController::class,'findByPadletId']);
+Route::get('userrightsuser/{user_id}', [UserrightsController::class,'findByUserId']);
 

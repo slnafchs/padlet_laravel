@@ -93,6 +93,14 @@ class UserrightsController extends Controller
         return $userright != null ? response()->json($userright, 200) : response()->json(null, 200);
     }
 
+    //find userrights for user ID
+    public function findByUserId(string $user_id) : JsonResponse
+    {
+        $userright = Userright::where('user_id', $user_id)
+            ->with(['user', 'padlet'])->get();
+        return $userright != null ? response()->json($userright, 200) : response()->json(null, 200);
+    }
+
 
     private function parseRequest(Request $request): Request
     {

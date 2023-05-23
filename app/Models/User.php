@@ -20,7 +20,7 @@ class User extends Authenticatable implements JWTSubject
      *
      * @var array<int, string>
      */
-    protected $fillable = ['firstname', 'lastname', 'email', 'password', 'image'];
+    protected $fillable = ['firstName', 'lastName', 'email', 'password', 'image'];
 
     public function padlets() : HasMany {
         return $this->hasMany(Padlet::class);

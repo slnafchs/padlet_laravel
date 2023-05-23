@@ -48,6 +48,37 @@ class InvitesController extends Controller
         return $invites != null ? response()->json($invites, 200) : response()->json(null, 200);
     }
 
+    public function update(Request $request, string $id): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $invite = Invite::with(['user', 'padlet'])
+                ->where('id', $id)
+                ->first();
+
+            if ($invite != null) {
+                $request = $this->parseRequest($request);
+                $invite->user_id =$request['user_id'];
+                $invite->padlet_id =$request['padlet_id'];
+                $invite->read = $request['read'];
+                $invite->edit = $request['edit'];
+                $invite->Delete =$request['Delete'];
+                $invite->save();
+            }
+
+            DB::commit();
+
+            $invite1 = Invite::with(['user', 'padlet'])
+                ->where('id', $id)
+                ->first();
+
+            return response()->json($invite1, 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json("Updating invite failed: " . $e->getMessage(), 420);
+        }
+    }
+
     public function delete(string $id): JsonResponse
     {
         $invite = Invite::where('id', $id)

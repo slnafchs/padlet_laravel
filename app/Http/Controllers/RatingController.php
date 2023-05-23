@@ -48,6 +48,47 @@ class RatingController extends Controller
         }
     }
 
+    public function update(Request $request, string $entrie_id, string $user_id): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $rating = Rating::with(['user', 'entrie'])
+                ->where('entrie_id', $entrie_id)
+                ->where('user_id', $user_id)
+                ->first();
+
+            if ($rating != null) {
+                $request = $this->parseRequest($request);
+                $rating->user_id =$request['user_id'];
+                $rating->entrie_id =$request['entrie_id'];
+                $rating->rating =$request['rating'];
+                $rating->save();
+            }
+
+            DB::commit();
+
+            $rating1 = Rating::with(['entrie', 'user'])
+                ->where('entrie_id', $entrie_id)
+                ->where('user_id', $user_id)
+                ->first();
+
+            return response()->json($rating1, 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json("Updating rating failed: " . $e->getMessage(), 420);
+        }
+    }
+
+    public function delete(string $entrie_id, string $user_id): JsonResponse
+    {
+        $rating = Rating::where('entrie_id', $entrie_id)->where('user_id', $user_id)
+            ->with(['user', 'entrie'])->first();
+        if ($rating != null) {
+            $rating->delete();
+            return response()->json('$rating (' . $entrie_id . " " . $user_id . ') successfully deleted', 200);
+        } else
+            return response()->json('$rating could not be deleted - it does not exist', 422);
+    }
 
     private function parseRequest(Request $request): Request
     {

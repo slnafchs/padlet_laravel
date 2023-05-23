@@ -59,6 +59,47 @@ class CommentController extends Controller
         }
     }
 
+    //Update Comment
+    public function update(Request $request, string $entrie_id, string $comment_id): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $comment = Comment::with(['entrie','user'])
+                ->where('id', $comment_id)
+                ->first();
+
+            if ($comment != null) {
+                $request = $this->parseRequest($request);
+                $comment->user_id =$request['user_id'];
+                $comment->entrie_id =$request['entrie_id'];
+                $comment->comment=$request['comment'];
+                $comment->save();
+            }
+
+            DB::commit();
+
+            $comment1 = Comment::with(['entrie','user'])
+                ->where('id', $comment_id)
+                ->first();
+
+            return response()->json($comment1, 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json("Updating comment failed: " . $e->getMessage(), 420);
+        }
+    }
+
+    public function delete(string $entrie_id, string $comment_id): JsonResponse
+    {
+        $comment = Comment::where('id', $comment_id)
+            ->with(['entrie','user'])->first();
+        if ($comment != null) {
+            $comment->delete();
+            return response()->json('$comment (' . $comment_id . ') successfully deleted', 200);
+        } else
+            return response()->json('$comment could not be deleted - it does not exist', 422);
+    }
+
     private function parseRequest(Request $request): Request
     {
         // get date and convert it - its in ISO 8601, e.g. "2018-01-01T23:00:00.000Z"
