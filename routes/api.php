@@ -70,5 +70,5 @@ Route::middleware('cors')->group(function() {
     Route::post('auth/login', [AuthController::class,'login']);
 });
 
-Route::get('userrights/padlet/{padlet_id}', [UserrightsController::class,'findByPadletId']);
+Route::get('userrights/{padlet_id}', [UserrightsController::class,'findByPadletId']);
 
