@@ -11,7 +11,7 @@ class Userright extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'padlet_id', 'read', 'edit', 'delete'];
+    protected $fillable = ['user_id', 'padlet_id', 'read', 'edit', 'Delete'];
     protected $primaryKey = ['user_id', 'padlet_id'];
     public $incrementing = false;
 

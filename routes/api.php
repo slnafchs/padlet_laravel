@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\EntrieController;
+use App\Http\Controllers\InvitesController;
 use App\Http\Controllers\PadletController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\UserController;
@@ -50,12 +51,19 @@ Route::get('comments', [CommentController::class,'index']);
 Route::get('entries/{entrie_id}/ratings', [RatingController::class,'findByEntryID']);
 Route::get('entries/{entrie_id}/comments', [CommentController::class,'findByEntryID']);
 Route::get('users/{id}', [UserController::class, 'findById']);
+Route::get('users/mail/{mail}', [UserController::class, 'findByEmail']);
 
 Route::get('userrights', [UserrightsController::class,'index']);
 Route::post('userrights', [UserrightsController::class,'save']);
 Route::get('userrights/{padlet_id}/{user_id}', [UserrightsController::class,'findById']);
 Route::put('userrights/{padlet_id}/{user_id}', [UserrightsController::class,'update']);
 Route::delete('userrights/{padlet_id}/{user_id}', [UserrightsController::class, 'delete']);
+
+Route::get('invites', [InvitesController::class,'index']);
+Route::get('invites/{user_id}', [InvitesController::class,'findByUserId']);
+Route::get('invites/{padlet_id}/{user_id}', [InvitesController::class,'findIfExists']);
+Route::post('invites', [InvitesController::class,'save']);
+Route::delete('invites/{id}', [InvitesController::class, 'delete']);
 
 /* auth */
 Route::middleware('cors')->group(function() {

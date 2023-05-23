@@ -13,4 +13,11 @@ class UserController extends Controller
             ->with(['entries', 'userrights', 'padlets', 'ratings', 'comments'])->first();
         return $user != null ? response()->json($user, 200) : response()->json(null, 200);
     }
+
+    public function findByEmail(string $mail): JsonResponse
+    {
+        $user = User::where('email', $mail)
+            ->with(['entries', 'userrights', 'padlets', 'ratings', 'comments'])->first();
+        return $user != null ? response()->json($user, 200) : response()->json(null, 200);
+    }
 }
