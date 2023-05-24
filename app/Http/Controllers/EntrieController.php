@@ -19,7 +19,7 @@ class EntrieController extends Controller
         return response()->json($entry, 200);
     }
 
-    //find entrie by ID
+    //Finde Eintrag durch ID
     public function findById(string $id): JsonResponse
     {
         $entrie = Entrie::where('id', $id)
@@ -27,13 +27,14 @@ class EntrieController extends Controller
         return $entrie != null ? response()->json($entrie, 200) : response()->json(null, 200);
     }
 
+    //Finde Eintrag durch Padlet ID
     public function findByPadletID(string $id):JsonResponse{
         $entry = Entrie::where('padlet_id', $id)
             ->with(['comments','user', 'ratings'])->get();
         return $entry != null ? response()->json($entry, 200) : response()->json(null, 200);
     }
 
-    //save Entry
+    //Speichere Entry
     public function save(Request $request, string $padletID):JsonResponse{
         $request = $this->parseRequest($request);
         DB::beginTransaction();
@@ -58,7 +59,7 @@ class EntrieController extends Controller
         }
     }
 
-    //delete Entry
+    //Lösche Entry
     public function delete(string $id): JsonResponse
     {
         $entrie = Entrie::where('id', $id)->first();
@@ -69,7 +70,7 @@ class EntrieController extends Controller
             return response()->json('entry could not be deleted - it does not exist', 422);
     }
 
-    //update Entry
+    //Update Entry
     public function update(Request $request, string $id): JsonResponse
     {
         DB::beginTransaction();

@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
+
+    //Finde User mittels ID
     public function findById(string $id): JsonResponse
     {
         $user = User::where('id', $id)
@@ -16,6 +18,7 @@ class UserController extends Controller
         return $user != null ? response()->json($user, 200) : response()->json(null, 200);
     }
 
+    //Finde User mittels Email
     public function findByEmail(string $mail): JsonResponse
     {
         $user = User::where('email', $mail)
@@ -23,7 +26,7 @@ class UserController extends Controller
         return $user != null ? response()->json($user, 200) : response()->json(null, 200);
     }
 
-    //save Rating
+    //Speichere neuen User
     public function save(Request $request): JsonResponse
     {
         $request = $this->parseRequest($request);
@@ -41,6 +44,7 @@ class UserController extends Controller
         }
     }
 
+    //Update User
     public function update(Request $request, string $user_id): JsonResponse
     {
         DB::beginTransaction();
@@ -72,6 +76,7 @@ class UserController extends Controller
         }
     }
 
+    //Lösche User
     public function delete(string $user_id): JsonResponse
     {
         $user = User::where('id', $user_id)
@@ -83,9 +88,9 @@ class UserController extends Controller
             return response()->json('$user could not be deleted - it does not exist', 422);
     }
 
+
     private function parseRequest(Request $request): Request
     {
-        // get date and convert it - its in ISO 8601, e.g. "2018-01-01T23:00:00.000Z"
         $date = new \DateTime($request->published);
         $request['published'] = $date;
         return $request;

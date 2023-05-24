@@ -13,7 +13,7 @@ class UserrightsController extends Controller
         return response()->json($userright, 200);
     }
 
-    //Create new Userright
+    //Speichere Userright
     public function save(Request $request): JsonResponse
     {
         $request = $this->parseRequest($request);
@@ -31,7 +31,7 @@ class UserrightsController extends Controller
         }
     }
 
-    //find userright by ID
+    //Finde Userright mittels ID
     public function findById(string $padlet_id, string $user_id) : JsonResponse
     {
         $userright = Userright::where('padlet_id', $padlet_id)->where( 'user_id', $user_id)
@@ -74,6 +74,7 @@ class UserrightsController extends Controller
         }
     }
 
+    //Lösche Userright
     public function delete(string $padlet_id, string $user_id): JsonResponse
     {
         $userright = Userright::where('padlet_id', $padlet_id)->where('user_id', $user_id)
@@ -85,7 +86,7 @@ class UserrightsController extends Controller
             return response()->json('$userright could not be deleted - it does not exist', 422);
     }
 
-    //find userrights for padlet ID
+    //Finde Userrights mittels Padlet ID
     public function findByPadletId(string $padlet_id) : JsonResponse
     {
         $userright = Userright::where('padlet_id', $padlet_id)
@@ -93,7 +94,7 @@ class UserrightsController extends Controller
         return $userright != null ? response()->json($userright, 200) : response()->json(null, 200);
     }
 
-    //find userrights for user ID
+    //Finde userrights mittels User ID
     public function findByUserId(string $user_id) : JsonResponse
     {
         $userright = Userright::where('user_id', $user_id)

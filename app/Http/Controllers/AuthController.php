@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
+    //Login und Logout von User
     public function __construct() {
         $this->middleware('auth:api', ['except' =>  ['login']]);
     }
@@ -40,7 +41,5 @@ class AuthController extends Controller
     public function refresh() {
         return $this->respondWithToken(auth()->refresh());
     }
-
-
 }
 

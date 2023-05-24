@@ -14,7 +14,7 @@ class InvitesController extends Controller
         return response()->json($invites, 200);
     }
 
-    //Create new invite
+    //Speichere Einladung
     public function save(Request $request): JsonResponse
     {
         $request = $this->parseRequest($request);
@@ -32,7 +32,7 @@ class InvitesController extends Controller
         }
     }
 
-    //find invite by user ID
+    //Finde Einladung durch User ID
     public function findByUserId(string $user_id) : JsonResponse
     {
         $invites = Invite::where('user_id', $user_id)
@@ -40,7 +40,7 @@ class InvitesController extends Controller
         return $invites != null ? response()->json($invites, 200) : response()->json(null, 200);
     }
 
-    //find invite by padlet and user ID
+    //Finde Einladung durch User ID und Padlet ID
     public function findIfExists(string $padlet_id, string $user_id) : JsonResponse
     {
         $invites = Invite::where('user_id', $user_id)->where('padlet_id', $padlet_id)
@@ -48,6 +48,7 @@ class InvitesController extends Controller
         return $invites != null ? response()->json($invites, 200) : response()->json(null, 200);
     }
 
+    //Update Einladung
     public function update(Request $request, string $id): JsonResponse
     {
         DB::beginTransaction();
@@ -79,6 +80,7 @@ class InvitesController extends Controller
         }
     }
 
+    //Lösche Einladung
     public function delete(string $id): JsonResponse
     {
         $invite = Invite::where('id', $id)

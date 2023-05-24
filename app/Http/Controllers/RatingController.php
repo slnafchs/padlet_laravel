@@ -21,7 +21,7 @@ class RatingController extends Controller
         return $rating != null ? response()->json($rating, 200) : response()->json(null, 200);
     }
 
-    //save Rating
+    //Speichere Rating
     public function saveRating(Request $request, string $entrieID): JsonResponse
     {
         $request = $this->parseRequest($request);
@@ -48,6 +48,7 @@ class RatingController extends Controller
         }
     }
 
+    //Update Rating
     public function update(Request $request, string $entrie_id, string $user_id): JsonResponse
     {
         DB::beginTransaction();
@@ -79,6 +80,7 @@ class RatingController extends Controller
         }
     }
 
+    //Lösche Rating
     public function delete(string $entrie_id, string $user_id): JsonResponse
     {
         $rating = Rating::where('entrie_id', $entrie_id)->where('user_id', $user_id)

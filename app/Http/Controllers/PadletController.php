@@ -15,9 +15,6 @@ class PadletController extends Controller
 {
     public function index(): JsonResponse
     {
-        /*$padlets = Padlet::all();
-        return view('padlets.index', compact('padlets'));*/
-
         $padlets = Padlet::with(['user', 'entries', 'userrights'])->get();
         return response()->json($padlets, 200);
     }
@@ -28,7 +25,7 @@ class PadletController extends Controller
         return view('padlets.show', compact('padlet'));
     }
 
-    //find padlet by ID
+    //Finde Padlet mit ID
     public function findById(string $id): JsonResponse
     {
         $padlet = Padlet::where('id', $id)
@@ -36,7 +33,7 @@ class PadletController extends Controller
         return $padlet != null ? response()->json($padlet, 200) : response()->json(null, 200);
     }
 
-    //find padlet by ID
+    //Finde öffentliche Padlets
     public function getPublic(): JsonResponse
     {
         $padlets = Padlet::where('is_public', TRUE)
@@ -44,6 +41,7 @@ class PadletController extends Controller
         return $padlets != null ? response()->json($padlets, 200) : response()->json(null, 200);
     }
 
+    //Finde Padlets mittels User ID
     public function getPadletsOfUser(string $user_id): JsonResponse
     {
         $padlets = Padlet::where('user_id', $user_id)
@@ -51,12 +49,14 @@ class PadletController extends Controller
         return $padlets != null ? response()->json($padlets, 200) : response()->json(null, 200);
     }
 
+    //Überprüfe ID
     public function checkID(string $id): JsonResponse
     {
         $padlet = Padlet::where('id', $id)->first();
         return $padlet != null ? response()->json(true, 200) : response()->json(false, 200);
     }
 
+    //Finde Padlet durch Suchterm
     public function findBySearchTerm(string $searchTerm): JsonResponse
     {
         $padlets = Padlet::with(['user', 'entries', 'userrights', 'entries.comments', 'entries.ratings'])
@@ -68,7 +68,7 @@ class PadletController extends Controller
         return response()->json($padlets, 200);
     }
 
-    //Create new Padlet
+    //Speichere neues Padlet
     public function save(Request $request): JsonResponse
     {
         $request = $this->parseRequest($request);
@@ -126,6 +126,7 @@ class PadletController extends Controller
         }
     }
 
+    //Lösche Padlet
     public function delete(string $id): JsonResponse
     {
         $padlet = Padlet::where('id', $id)->first();

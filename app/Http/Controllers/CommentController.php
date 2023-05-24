@@ -26,13 +26,14 @@ class CommentController extends Controller
         return $comment != null ? response()->json($comment, 200) : response()->json(null, 200);
     }
 
+    //Finde Kommentare durch EntryID
     public function findByEntryID(string $entry_id):JsonResponse{
         $comment = Comment::where('entrie_id', $entry_id)
             ->with(['user', 'entrie'])->get();
         return $comment != null ? response()->json($comment, 200) : response()->json(null, 200);
     }
 
-    //save/create Comment
+    //speichere Kommentare
     public function saveComment(Request $request, string $entrieID): JsonResponse
     {
         $request = $this->parseRequest($request);
@@ -59,7 +60,7 @@ class CommentController extends Controller
         }
     }
 
-    //Update Comment
+    //Update Kommentar
     public function update(Request $request, string $entrie_id, string $comment_id): JsonResponse
     {
         DB::beginTransaction();
@@ -89,6 +90,7 @@ class CommentController extends Controller
         }
     }
 
+    //Lösche Kommentar
     public function delete(string $entrie_id, string $comment_id): JsonResponse
     {
         $comment = Comment::where('id', $comment_id)
