@@ -22,11 +22,6 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-// Cors -> Fehlerbehebung CORS Policy
-Route::middleware('cors')->group(function() {
-    Route::post('auth/login', [AuthController::class,'login']);
-});
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();});
 
@@ -86,6 +81,9 @@ Route::post('invites', [InvitesController::class,'save']);
 Route::put('invites/{id}', [InvitesController::class,'update']);
 Route::delete('invites/{id}', [InvitesController::class, 'delete']);
 
-
+// Cors -> Fehlerbehebung CORS Policy
+//Route::middleware('cors')->group(function() {
+    Route::post('auth/login', [AuthController::class,'login']);
+//});
 
 
