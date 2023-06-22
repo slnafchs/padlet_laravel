@@ -11,6 +11,13 @@ return new class extends Migration
      *
      * @return void
      */
+
+    //Datenbanktabelle "users" wird erstellt.
+
+
+    //hier werden die Spalten der Tabelle definiert, darunter "id" als Primärschlüssel, "firstName", "lastName",
+    //"email", "email_verified_at", "password", "image" sowie "rememberToken" und die Timestamps für die Erstellung
+    //und Aktualisierung der Datensätze.
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
@@ -31,6 +38,8 @@ return new class extends Migration
      *
      * @return void
      */
+
+    //bei dieser Methode wird die Tabelle "users" wieder gelöscht, wenn die Migration zurückgesetzt wird.
     public function down()
     {
         Schema::dropIfExists('users');

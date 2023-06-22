@@ -22,22 +22,27 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $fillable = ['firstName', 'lastName', 'email', 'password', 'image'];
 
+    //Ein User kann mehrere Padlets haben
     public function padlets() : HasMany {
         return $this->hasMany(Padlet::class);
     }
 
+    //Ein User kann mehrere Entries erstellen
     public function entries() : HasMany {
         return $this->hasMany(Entrie::class);
     }
 
+    //Ein User kann mehrere Ratings erstellen
     public function ratings() : HasMany {
         return $this->hasMany(Rating::class);
     }
 
+    //Ein User kann mehrere Kommentare erstellen
     public function comments() : HasMany {
         return $this->hasMany(Comment::class);
     }
 
+    //Ein User kann mehrere Userrechte haben
     public function userrights() : HasMany {
         return $this->hasMany(Userright::class);
     }

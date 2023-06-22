@@ -12,18 +12,22 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
 /*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
+Definiert die API-Routen für eine Laravel-Anwendung.
+
+Die aufgeführten Routen verknüpfen verschiedene Endpunkte mit den entsprechenden Controllern und Aktionen, um
+die entsprechenden Funktionalitäten bereitzustellen. Jede Route hat eine spezifische URL, einen zugehörigen Controller
+und eine Aktion, die ausgeführt wird, wenn der Endpunkt aufgerufen wird. Diese Routen ermöglichen den Zugriff auf
+verschiedene Ressourcen und Operationen wie das Abrufen von Daten, das Speichern, Aktualisieren und Löschen von Daten,
+die Verwaltung von Benutzerberechtigungen und mehr.
 */
 
+// Middleware
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();});
+//registrieren der Middleware und den Controller in Route
+Route::post('auth/login', [AuthController::class,'login']);
+
+//Route::group(['middleware' => ['api','auth.jwt']], function(){});
 
 //Padlet
 Route::get('padlets', [PadletController::class,'index']);
@@ -81,9 +85,5 @@ Route::post('invites', [InvitesController::class,'save']);
 Route::put('invites/{id}', [InvitesController::class,'update']);
 Route::delete('invites/{id}', [InvitesController::class, 'delete']);
 
-// Cors -> Fehlerbehebung CORS Policy
-//Route::middleware('cors')->group(function() {
-    Route::post('auth/login', [AuthController::class,'login']);
-//});
 
 

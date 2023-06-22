@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+//Eloquent-Modell, das die Datenbanktabelle für Kommentare repräsentiert
 class Comment extends Model
 {
     use HasFactory;

@@ -36,6 +36,15 @@ return [
     */
 
 
+    //definiert die Konfiguration für den Authentifizierungswächter (guard) mit dem Namen 'api' in Laravel.
+    // In diesem Fall wird der Wächter als 'jwt' konfiguriert, was darauf hinweist, dass JWT (JSON Web Token) für
+    // die Authentifizierung verwendet wird. Der Wächter 'api' wird angegeben, um den Fahrer (driver) 'jwt' zu
+    // verwenden und den Benutzeranbieter (provider) 'users' zuzuweisen. Dies bedeutet, dass der JWT-Fahrer für
+    // die Authentifizierung in der API verwendet wird und der Benutzeranbieter 'users' die Benutzerdaten für die
+    // Authentifizierung bereitstellt
+
+    // jwt soll für die Authentifizierung verwendet werden
+
     'guards' => [
         'api' => [
             'driver' => 'jwt',

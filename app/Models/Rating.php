@@ -7,18 +7,24 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+//Eloquent-Modell, das die Datenbanktabelle für Bewertungen repräsentiert
 class Rating extends Model
 {
+    //Verwendung von Factories in Eloquent-Modellen wird ermöglicht.
+    //Es bietet eine standardisierte Methode zur Erzeugung von Testdaten oder Dummy-Daten für das Modell.
     use HasFactory;
+    //ausfüllbare Felder
     protected $fillable = ['user_id', 'entrie_id', 'rating'];
 
-    protected $primaryKey = ['user_id', 'entrie_id'];
+    protected $primaryKey = ['user_id', 'entrie_id']; //Primärschlüssel
     public $incrementing = false;
 
+    //Eine Bewertung gehört zu einem Entrie
     public function entrie() : BelongsTo {
         return $this->BelongsTo(Entrie::class);
     }
 
+    //Eine Bewertung gehört zu einem User
     public function user() : BelongsTo {
         return $this->BelongsTo(User::class);
     }

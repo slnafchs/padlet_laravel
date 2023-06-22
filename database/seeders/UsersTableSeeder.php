@@ -16,9 +16,13 @@ class UsersTableSeeder extends Seeder
      *
      * @return void
      */
+
+    //UserTable mit Daten befüllt -> diese werden in die Datenbank gesendet (db seed)
+
     public function run()
     {
 
+        //fillables von Model "User"
         $user = new \App\Models\User;
         $user->firstname = "Selina";
         $user->lastname = "Fuchs";

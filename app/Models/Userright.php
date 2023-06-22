@@ -15,10 +15,12 @@ class Userright extends Model
     protected $primaryKey = ['user_id', 'padlet_id'];
     public $incrementing = false;
 
+    //Ein Userrecht gehört zu einem User
     public function user(): BelongsTo {
         return $this->belongsTo(User::class);
     }
 
+    //Ein Userrecht gehört zu einem Padlet
     public function padlet(): BelongsTo {
         return $this->belongsTo(Padlet::class);
     }

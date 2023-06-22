@@ -13,19 +13,21 @@ use Illuminate\Support\Facades\DB;
 
 class PadletController extends Controller
 {
+    //es werden alle Padlets (mit user, entries und userrights) aus der Datenbank abgerufen
     public function index(): JsonResponse
     {
-        $padlets = Padlet::with(['user', 'entries', 'userrights'])->get();
+        $padlets = Padlet::with(['user', 'entries', 'userrights'])->get(); //Padlet = Model
         return response()->json($padlets, 200);
     }
 
+    //sucht entsprechendes Padlet in der Datenbank und gibt eine Ansicht zurück, in der das Padlet angezeigt wird
     public function show($padlet)
     {
         $padlet = Padlet::find($padlet);
         return view('padlets.show', compact('padlet'));
     }
 
-    //Finde Padlet mit ID
+    //gibt Padlet mit der entsprechenden ID zurück, wann es kein Padlet findet dann "null"
     public function findById(string $id): JsonResponse
     {
         $padlet = Padlet::where('id', $id)
@@ -33,7 +35,7 @@ class PadletController extends Controller
         return $padlet != null ? response()->json($padlet, 200) : response()->json(null, 200);
     }
 
-    //Finde öffentliche Padlets
+    //gibt öffentliche Padlets zurück, also wo is_public = TRUE ist
     public function getPublic(): JsonResponse
     {
         $padlets = Padlet::where('is_public', TRUE)
@@ -41,7 +43,8 @@ class PadletController extends Controller
         return $padlets != null ? response()->json($padlets, 200) : response()->json(null, 200);
     }
 
-    //Finde Padlets mittels User ID
+    //ruft alle Padlets eines bestimmten Benutzers aus der Datenbank ab, indem sie nach Padlets sucht, bei denen
+    //das Feld "user_id" mit der übergebenen User ID übereinstimmt
     public function getPadletsOfUser(string $user_id): JsonResponse
     {
         $padlets = Padlet::where('user_id', $user_id)
@@ -49,14 +52,15 @@ class PadletController extends Controller
         return $padlets != null ? response()->json($padlets, 200) : response()->json(null, 200);
     }
 
-    //Überprüfe ID
+    //überprüft, ob ein Padlet mit der angegebenen ID in der Datenbank vorhanden ist
     public function checkID(string $id): JsonResponse
     {
         $padlet = Padlet::where('id', $id)->first();
         return $padlet != null ? response()->json(true, 200) : response()->json(false, 200);
     }
 
-    //Finde Padlet durch Suchterm
+    //sucht nach Padlets in der Datenbank, die entweder den Suchbegriff im Namen haben oder deren Benutzer (Ersteller)
+    //den Suchbegriff im Vornamen oder Nachnamen haben
     public function findBySearchTerm(string $searchTerm): JsonResponse
     {
         $padlets = Padlet::with(['user', 'entries', 'userrights', 'entries.comments', 'entries.ratings'])
@@ -68,79 +72,90 @@ class PadletController extends Controller
         return response()->json($padlets, 200);
     }
 
-    //Speichere neues Padlet
+    //speichert ein neues Padlet basierend auf den Daten, die in der übergebenen Anfrage (Request) enthalten sind
     public function save(Request $request): JsonResponse
     {
         $request = $this->parseRequest($request);
         DB::beginTransaction();
 
+        //sicherstellen, dass alle Datenbankoperationen entweder erfolgreich durchgeführt
+        //oder bei einem Fehler rückgängig gemacht werden
         try {
             $padlet = Padlet::create($request->all());
             DB::commit();
-            // return a vaild http response
+            //wenn erfolgreich Padlet gespeichert wurde
             return response()->json($padlet, 201);
         } catch (\Exception $e) {
-            // rollback all queries
+            //wenn Padlet nicht erfolgreich gespeichert wurde -> Fehler
             DB::rollBack();
             return response()->json("saving padlet failed: " . $e->getMessage(), 420);
         }
     }
 
-    //Update Padlet
+    //aktualisiert ein vorhandenes Padlet in der Datenbank basierend auf den Daten, die in der übergebenen Anfrage
+    //(Request) enthalten sind
     public function update(Request $request, string $id): JsonResponse
     {
         DB::beginTransaction();
         try {
+            //Padlet wird abgerufen
             $padlet = Padlet::with(['user', 'entries', 'userrights'])
                 ->where('id', $id)->first();
             if ($padlet != null) {
                 $request = $this->parseRequest($request);
+                //padlet wird aktualisiert
                 $padlet->update($request->all());
 
-                //delete all userrights
+                //Userrights werden gelöscht
                 $padlet->userrights()->delete();
 
-                //Update Userrights
+                //Userrights werden geupdated
                 if (isset($request['userrights']) && is_array($request['userrights'])) {
                     foreach ($request['userrights'] as $userrights) {
-
                         $userrights = Userright::firstOrNew(
                             ['padlet_id' => $userrights['padlet_id'],
                                 'user_id' => $userrights['user_id'],
                                 'read' => $userrights['read'],
                                 'edit' => $userrights['edit'],
                                 'delete' => $userrights['delete']]);
+                        //neue Userrights werden gespeichert
                         $padlet->userrights()->save($userrights);
                     }
                 }
+                //Padlet wird gespeichert
                 $padlet->save();
             }
             DB::commit();
+            //wenn Padlet erfolgreich geupdated hat, wird es zurückgegeben
             $padlet1 = Padlet::with(['user', 'entries', 'userrights'])
-                ->where('id', $id)->first(); // return a vaild http response
+                ->where('id', $id)->first();
             return response()->json($padlet1, 201);
         } catch (\Exception $e) {
-            // rollback all queries
+            //wenn was schief gegangen ist
             DB::rollBack();
             return response()->json("updating padlet failed: " . $e->getMessage(), 420);
         }
     }
 
-    //Lösche Padlet
+    //löscht ein Padlet aus der Datenbank, indem es nach dem Padlet mit der angegebenen ID sucht
     public function delete(string $id): JsonResponse
     {
+        //wenn Padlet gefunden wird -> wird erfolgreich gelöscht
         $padlet = Padlet::where('id', $id)->first();
         if ($padlet != null) {
             $padlet->delete();
             return response()->json('padlet (' . $id . ') successfully deleted', 200);
         } else
+            //wenn etwas nicht geklappt hat -> Fehler
             return response()->json('padlet could not be deleted - it does not exist', 422);
     }
 
+    //nimmt eine Anfrage (Request) entgegen und analysiert sie
     private function parseRequest(Request $request): Request
     {
-        // get date and convert it - its in ISO 8601, e.g. "2018-01-01T23:00:00.000Z"
+        //erstellt ein neues DateTime-Objekt basierend auf dem Wert des 'published'-Feldes in der Anfrage
         $date = new \DateTime($request->published);
+        //aktualisiert den Wert in der Anfrage
         $request['published'] = $date;
         return $request;
     }
